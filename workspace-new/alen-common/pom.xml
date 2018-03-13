@@ -1,0 +1,248 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.alen.common</groupId>
+	 <artifactId>alen-common</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>common-parent</name>
+	
+	<modules>
+		<module>common-cloud</module>
+	</modules>
+
+	<properties>
+		<encoding>UTF-8</encoding>
+		<skipTests>false</skipTests>
+		<testFailureIgnore>false</testFailureIgnore>
+
+		<java.version>1.8</java.version>
+		<gson-version>2.7</gson-version>
+		<druid-version>1.1.1</druid-version>
+		<spring-boot-version>1.4.7.RELEASE</spring-boot-version>
+		<spring-cloud-version>Brixton.SR7</spring-cloud-version>
+		<jooq-version>3.8.2</jooq-version>
+		<logback-version>1.1.10</logback-version>
+		<logstash-logback-encoder-version>4.6</logstash-logback-encoder-version>
+		<poi-version>3.15</poi-version>
+		<xstream-version>1.4.5</xstream-version>
+		<dom4j-version>2.0.0</dom4j-version>
+		<!-- 插件版本： -->
+		<maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
+		<maven-resources-plugin-version>2.7</maven-resources-plugin-version>
+		<maven-source-plugin-version>2.2.1</maven-source-plugin-version>
+		<maven-surefire-plugin-version>2.16</maven-surefire-plugin-version>
+		<docker-maven-plugin-version>0.4.13</docker-maven-plugin-version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency><!-- google开源json处理 -->
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>${gson-version}</version>
+			</dependency>
+			<dependency><!-- 阿里开源，数据库连接池 -->
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>${druid-version}</version>
+			</dependency>
+			<dependency><!-- spring-boot依赖 -->
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency><!-- spring-cloud依赖 -->
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency><!-- 日志转json -->
+				<groupId>net.logstash.logback</groupId>
+				<artifactId>logstash-logback-encoder</artifactId>
+				<version>${logstash-logback-encoder-version}</version>
+			</dependency>
+			<dependency><!-- 基于Java访问关系型数据库的工具包，轻量，简单，并且足够灵活 -->
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq</artifactId>
+				<version>${jooq-version}</version>
+			</dependency>
+			<dependency><!-- 是下面两个模块的基础模块 -->
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>${logback-version}</version>
+			</dependency>
+			<dependency><!-- 它是log4j的改良版本 -->
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback-version}</version>
+			</dependency>
+			<dependency><!-- 使用浏览器来访问日志 -->
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-access</artifactId>
+				<version>${logback-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi</artifactId>
+				<version>${poi-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.thoughtworks.xstream</groupId>
+				<artifactId>xstream</artifactId>
+				<version>${xstream-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.dom4j</groupId>
+				<artifactId>dom4j</artifactId>
+				<version>${dom4j-version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>pull-parser</artifactId>
+						<groupId>pull-parser</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<defaultGoal>package</defaultGoal>
+		<resources>
+			<resource>
+				<!-- 默认即：src/main/java -->
+				<directory>${project.build.sourceDirectory}</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+				<excludes>
+					<exclude>log4j.*</exclude>
+					<exclude>logback.*</exclude>
+					<exclude>**/*.java</exclude>
+					<exclude>**/.svn/**</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+				<excludes>
+					<exclude>log4j.*</exclude>
+					<exclude>logback.*</exclude>
+					<exclude>**/.svn/**</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<!-- 默认即：src/test/java -->
+				<directory>${project.build.testSourceDirectory}</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+				<excludes>
+					<exclude>**/.svn/**</exclude>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+				<excludes>
+					<exclude>**/.svn/**</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+		<plugins>
+			<!-- 资源编码UTF-8 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>${encoding}</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${encoding}</encoding>
+				</configuration>
+			</plugin>
+
+			<!-- package的时候，单独打出source包出来，deploy的时候能够一同提交到库中 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<configuration>
+					<include>${project.build.sourceDirectory}</include>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>${skipTests}</skip>
+					<testFailureIgnore>${testFailureIgnore}</testFailureIgnore>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler-plugin-version}</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>${maven-resources-plugin-version}</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${maven-source-plugin-version}</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven-surefire-plugin-version}</version>
+				</plugin>
+				<plugin>
+					<groupId>com.spotify</groupId>
+					<artifactId>docker-maven-plugin</artifactId>
+					<version>${docker-maven-plugin-version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<distributionManagement>
+		<repository>
+			<id>nexus-aliyun</id>
+			<name>Nexus aliyun</name>
+			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-aliyun</id>
+			<name>Nexus aliyun</name>
+			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>
